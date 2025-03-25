@@ -1,6 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.3";
+import { Resend } from "npm:resend@2.0.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -25,6 +26,8 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
+    const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+
     // Parse request body
     const { name, email, message }: ContactMessage = await req.json();
 
@@ -45,14 +48,26 @@ serve(async (req) => {
       );
     }
 
-    // Send notification email using email service of your choice
-    // For demonstration, we'll just log it for now
-    console.log(`
-      New contact message:
-      Name: ${name}
-      Email: ${email}
-      Message: ${message}
-    `);
+    // Send notification email
+    const { data: emailData, error: emailError } = await resend.emails.send({
+      from: "Osmel P. Teran <onboarding@resend.dev>",
+      to: "osmelprieto92@gmail.com",
+      subject: "Nuevo mensaje de contacto",
+      html: `
+        <h2>Has recibido un nuevo mensaje de contacto</h2>
+        <p><strong>Nombre:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Mensaje:</strong></p>
+        <p>${message}</p>
+      `,
+    });
+
+    if (emailError) {
+      console.error("Error sending email notification:", emailError);
+      // We still return success since the message was stored in the database
+    } else {
+      console.log("Email notification sent successfully:", emailData);
+    }
 
     return new Response(
       JSON.stringify({ 
