@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Mail, Send } from 'lucide-react';
@@ -87,14 +86,6 @@ const Contact = () => {
                 Ready to elevate your business with advanced AI solutions? Get in touch to discuss your project or schedule a consultation.
               </p>
               
-              <div className="flex items-center mb-8">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-4">
-                  <Mail className="w-5 h-5" />
-                </div>
-                <a href="mailto:osmelprieto92@gmail.com" className="text-lg hover:text-primary transition-colors">
-                  osmelprieto92@gmail.com
-                </a>
-              </div>
             </div>
             
             <div className="relative">
