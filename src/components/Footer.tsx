@@ -8,7 +8,7 @@ const Footer = () => {
   const socialLinks = [
     { name: 'GitHub', icon: <Github className="w-5 h-5" />, url: 'https://github.com/' },
     { name: 'LinkedIn', icon: <Linkedin className="w-5 h-5" />, url: 'https://www.linkedin.com/in/osmel-teran-884480111/' },
-    { name: 'Twitter', icon: <Twitter className="w-5 h-5" />, url: 'https://twitter.com/' },
+    { name: 'Twitter', icon: <Twitter className="w-5 h-5" />, url: 'https://x.com/OsmelTeran' },
   ];
   
   return (
