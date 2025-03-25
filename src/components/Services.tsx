@@ -2,12 +2,8 @@
 import React, { useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Lightbulb, Command, BarChart4, Wand2, CircuitBoard, Database } from 'lucide-react';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { getTranslation } from '@/translations';
 
 const Services = () => {
-  const { language } = useLanguage();
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -30,33 +26,33 @@ const Services = () => {
 
   const services = [
     {
-      title: getTranslation('aiStrategyConsulting', language),
-      description: getTranslation('aiStrategyDescription', language),
+      title: "AI Strategy Consulting",
+      description: "Develop a comprehensive AI roadmap aligned with your business goals and technological capabilities.",
       icon: <Lightbulb className="h-8 w-8" />,
     },
     {
-      title: getTranslation('customAISolutions', language),
-      description: getTranslation('customAIDescription', language),
+      title: "Custom AI Solutions",
+      description: "Design and implement tailor-made AI systems that address your specific business challenges.",
       icon: <Wand2 className="h-8 w-8" />,
     },
     {
-      title: getTranslation('predictiveAnalytics', language),
-      description: getTranslation('predictiveAnalyticsDescription', language),
+      title: "Predictive Analytics",
+      description: "Leverage machine learning to forecast trends and make data-driven business decisions.",
       icon: <BarChart4 className="h-8 w-8" />,
     },
     {
-      title: getTranslation('naturalLanguageProcessing', language),
-      description: getTranslation('nlpDescription', language),
+      title: "Natural Language Processing",
+      description: "Create intelligent systems that understand, interpret, and generate human language.",
       icon: <Command className="h-8 w-8" />,
     },
     {
-      title: getTranslation('aiIntegration', language),
-      description: getTranslation('aiIntegrationDescription', language),
+      title: "AI Integration",
+      description: "Seamlessly integrate AI capabilities into your existing software ecosystem and workflows.",
       icon: <CircuitBoard className="h-8 w-8" />,
     },
     {
-      title: getTranslation('dataEngineering', language),
-      description: getTranslation('dataEngineeringDescription', language),
+      title: "Data Engineering",
+      description: "Build robust data pipelines and architectures to power your AI and analytics initiatives.",
       icon: <Database className="h-8 w-8" />,
     },
   ];
@@ -66,15 +62,15 @@ const Services = () => {
       <div className="container px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="inline-block px-3 py-1 mb-3 text-xs font-medium tracking-wider text-primary uppercase rounded-full reveal">
-            {getTranslation('servicesHeading', language)}
+            Services
           </span>
           
           <h2 className="text-4xl font-bold mb-6 reveal">
-            {getTranslation('aiConsultingServices', language)}
+            AI Consulting Services
           </h2>
           
           <p className="text-lg text-foreground/80 reveal">
-            {getTranslation('servicesDescription', language)}
+            Expert solutions to help businesses leverage artificial intelligence for innovation, efficiency, and growth.
           </p>
         </div>
         

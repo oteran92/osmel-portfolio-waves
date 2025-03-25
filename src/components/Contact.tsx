@@ -1,14 +1,10 @@
-
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Mail, Send } from 'lucide-react';
 import { toast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useLanguage } from '@/contexts/LanguageContext';
-import { getTranslation } from '@/translations';
 
 const Contact = () => {
-  const { language } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -50,8 +46,8 @@ const Contact = () => {
       console.log('Message sent successfully');
       
       toast({
-        title: getTranslation('messageSent', language),
-        description: getTranslation('thankYou', language),
+        title: "Mensaje enviado",
+        description: "¡Gracias por tu mensaje! Me pondré en contacto contigo pronto.",
       });
       
       setFormData({
@@ -60,11 +56,11 @@ const Contact = () => {
         message: '',
       });
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error('Error al enviar el mensaje:', error);
       
       toast({
-        title: getTranslation('errorSending', language),
-        description: getTranslation('tryAgain', language),
+        title: "Error",
+        description: "No se pudo enviar el mensaje. Por favor, inténtalo de nuevo más tarde.",
         variant: "destructive",
       });
     } finally {
@@ -79,15 +75,15 @@ const Contact = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="reveal">
               <span className="inline-block px-3 py-1 mb-3 text-xs font-medium tracking-wider text-primary uppercase rounded-full">
-                {getTranslation('contactHeading', language)}
+                Contact
               </span>
               
               <h2 className="text-4xl font-bold mb-6">
-                {getTranslation('letsWork', language)} <span className="text-primary">{getTranslation('together', language)}</span>
+                Let's Work <span className="text-primary">Together</span>
               </h2>
               
               <p className="text-lg text-foreground/80 mb-8">
-                {getTranslation('contactDescription', language)}
+                Ready to elevate your business with advanced AI solutions? Get in touch to discuss your project or schedule a consultation.
               </p>
               
             </div>
@@ -98,7 +94,7 @@ const Contact = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      {getTranslation('name', language)}
+                      Name
                     </label>
                     <input
                       id="name"
@@ -108,13 +104,13 @@ const Contact = () => {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                      placeholder={getTranslation('yourName', language)}
+                      placeholder="Your name"
                     />
                   </div>
                   
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium mb-2">
-                      {getTranslation('email', language)}
+                      Email
                     </label>
                     <input
                       id="email"
@@ -124,13 +120,13 @@ const Contact = () => {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                      placeholder={getTranslation('yourEmail', language)}
+                      placeholder="your@email.com"
                     />
                   </div>
                   
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium mb-2">
-                      {getTranslation('message', language)}
+                      Message
                     </label>
                     <textarea
                       id="message"
@@ -140,7 +136,7 @@ const Contact = () => {
                       required
                       rows={5}
                       className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
-                      placeholder={getTranslation('tellAboutProject', language)}
+                      placeholder="Tell me about your project..."
                     />
                   </div>
                   
@@ -159,11 +155,11 @@ const Contact = () => {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        {getTranslation('sending', language)}
+                        Sending...
                       </span>
                     ) : (
                       <span className="flex items-center">
-                        {getTranslation('sendMessage', language)}
+                        Send Message
                         <Send className="ml-2 w-4 h-4" />
                       </span>
                     )}

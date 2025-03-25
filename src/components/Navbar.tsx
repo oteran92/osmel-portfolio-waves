@@ -1,14 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { getTranslation } from '@/translations';
-import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { language } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,12 +15,6 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const navItems = [
-    { name: getTranslation('about', language), href: '#about' },
-    { name: getTranslation('services', language), href: '#services' },
-    { name: getTranslation('contact', language), href: '#contact' },
-  ];
 
   return (
     <header 
@@ -44,16 +34,15 @@ const Navbar = () => {
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          {navItems.map((item) => (
+          {['About', 'Services', 'Contact'].map((item) => (
             <a
-              key={item.name}
-              href={item.href}
+              key={item}
+              href={`#${item.toLowerCase()}`}
               className="relative text-sm font-medium text-foreground/90 hover:text-foreground transition-colors duration-200 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all hover:after:w-full"
             >
-              {item.name}
+              {item}
             </a>
           ))}
-          <LanguageSwitcher />
         </nav>
         
         {/* Mobile Menu Button */}
@@ -83,19 +72,16 @@ const Navbar = () => {
         isMobileMenuOpen ? "max-h-56 py-4" : "max-h-0"
       )}>
         <nav className="container flex flex-col space-y-4">
-          {navItems.map((item) => (
+          {['About', 'Services', 'Contact'].map((item) => (
             <a
-              key={item.name}
-              href={item.href}
+              key={item}
+              href={`#${item.toLowerCase()}`}
               className="text-foreground/90 hover:text-foreground py-2 transition-colors duration-200"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              {item.name}
+              {item}
             </a>
           ))}
-          <div className="py-2">
-            <LanguageSwitcher />
-          </div>
         </nav>
       </div>
     </header>
