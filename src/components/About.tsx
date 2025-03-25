@@ -2,9 +2,12 @@
 import React, { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Code, Cpu, Bot, Brain } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { getTranslation } from '@/translations';
 
 const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { language } = useLanguage();
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -27,10 +30,22 @@ const About = () => {
   }, []);
   
   const skills = [
-    { name: 'Software Engineering', icon: <Code className="w-6 h-6" /> },
-    { name: 'AI Development', icon: <Brain className="w-6 h-6" /> },
-    { name: 'Machine Learning', icon: <Cpu className="w-6 h-6" /> },
-    { name: 'Conversational AI', icon: <Bot className="w-6 h-6" /> },
+    { 
+      name: getTranslation('softwareEngineering', language), 
+      icon: <Code className="w-6 h-6" /> 
+    },
+    { 
+      name: getTranslation('aiDevelopment', language), 
+      icon: <Brain className="w-6 h-6" /> 
+    },
+    { 
+      name: getTranslation('machineLearning', language), 
+      icon: <Cpu className="w-6 h-6" /> 
+    },
+    { 
+      name: getTranslation('conversationalAI', language), 
+      icon: <Bot className="w-6 h-6" /> 
+    },
   ];
   
   return (
@@ -42,20 +57,20 @@ const About = () => {
       <div className="container px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <span className="inline-block px-3 py-1 mb-3 text-xs font-medium tracking-wider text-primary uppercase rounded-full reveal">
-            About Me
+            {getTranslation('aboutMe', language)}
           </span>
           
           <h2 className="text-4xl font-bold mb-12 reveal">
-            Engineering Solutions <span className="text-primary">for Complex AI Challenges</span>
+            {getTranslation('engineeringSolutions', language)} <span className="text-primary">{getTranslation('forComplexAIChallenges', language)}</span>
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="reveal">
               <p className="text-lg leading-relaxed mb-6">
-                As a software engineer specializing in AI solutions, I bring technical expertise and innovative thinking to every project. My approach combines solid engineering foundations with cutting-edge AI technologies to solve real business challenges.
+                {getTranslation('aboutDescription1', language)}
               </p>
               <p className="text-lg leading-relaxed">
-                I partner with businesses across industries to implement intelligent systems that automate processes, extract insights from data, and create new opportunities for growth and efficiency.
+                {getTranslation('aboutDescription2', language)}
               </p>
             </div>
             

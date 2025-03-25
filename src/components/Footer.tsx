@@ -1,14 +1,17 @@
 
 import React from 'react';
-import { Github, Linkedin, Twitter } from 'lucide-react';
+import { Github, Linkedin, X } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { getTranslation } from '@/translations';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { language } = useLanguage();
   
   const socialLinks = [
     { name: 'GitHub', icon: <Github className="w-5 h-5" />, url: 'https://github.com/oteran92' },
     { name: 'LinkedIn', icon: <Linkedin className="w-5 h-5" />, url: 'https://www.linkedin.com/in/osmel-teran-884480111/' },
-    { name: 'Twitter', icon: <Twitter className="w-5 h-5" />, url: 'https://x.com/OsmelTeran' },
+    { name: 'X', icon: <X className="w-5 h-5" />, url: 'https://x.com/OsmelTeran' },
   ];
   
   return (
@@ -20,7 +23,7 @@ const Footer = () => {
               <span className="text-primary">O</span>PT
             </a>
             <p className="mt-2 text-sm text-foreground/70">
-              AI Engineering Consultant
+              {getTranslation('aiEngineeringConsultant', language)}
             </p>
           </div>
           
@@ -42,15 +45,15 @@ const Footer = () => {
         
         <div className="mt-8 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-foreground/70">
-            &copy; {currentYear} Osmel P. Teran. All rights reserved.
+            &copy; {currentYear} Osmel P. Teran. {getTranslation('allRightsReserved', language)}
           </p>
           
           <div className="mt-4 md:mt-0 flex space-x-6">
             <a href="#" className="text-sm text-foreground/70 hover:text-foreground transition-colors">
-              Privacy Policy
+              {getTranslation('privacyPolicy', language)}
             </a>
             <a href="#" className="text-sm text-foreground/70 hover:text-foreground transition-colors">
-              Terms of Service
+              {getTranslation('termsOfService', language)}
             </a>
           </div>
         </div>
