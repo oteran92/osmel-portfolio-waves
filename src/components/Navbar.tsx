@@ -1,10 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '../contexts/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +18,12 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const navItems = [
+    { key: 'about', label: t.navbar.about },
+    { key: 'services', label: t.navbar.services },
+    { key: 'contact', label: t.navbar.contact },
+  ];
 
   return (
     <header 
@@ -34,15 +43,16 @@ const Navbar = () => {
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          {['About', 'Services', 'Contact'].map((item) => (
+          {navItems.map((item) => (
             <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
+              key={item.key}
+              href={`#${item.key}`}
               className="relative text-sm font-medium text-foreground/90 hover:text-foreground transition-colors duration-200 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all hover:after:w-full"
             >
-              {item}
+              {item.label}
             </a>
           ))}
+          <LanguageSwitcher />
         </nav>
         
         {/* Mobile Menu Button */}
@@ -72,16 +82,19 @@ const Navbar = () => {
         isMobileMenuOpen ? "max-h-56 py-4" : "max-h-0"
       )}>
         <nav className="container flex flex-col space-y-4">
-          {['About', 'Services', 'Contact'].map((item) => (
+          {navItems.map((item) => (
             <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
+              key={item.key}
+              href={`#${item.key}`}
               className="text-foreground/90 hover:text-foreground py-2 transition-colors duration-200"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              {item}
+              {item.label}
             </a>
           ))}
+          <div className="py-2">
+            <LanguageSwitcher />
+          </div>
         </nav>
       </div>
     </header>

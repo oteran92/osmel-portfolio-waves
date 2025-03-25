@@ -1,10 +1,13 @@
+
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Mail, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { toast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Contact = () => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -46,8 +49,8 @@ const Contact = () => {
       console.log('Message sent successfully');
       
       toast({
-        title: "Mensaje enviado",
-        description: "¡Gracias por tu mensaje! Me pondré en contacto contigo pronto.",
+        title: t.contact.successTitle,
+        description: t.contact.successDescription,
       });
       
       setFormData({
@@ -56,11 +59,11 @@ const Contact = () => {
         message: '',
       });
     } catch (error) {
-      console.error('Error al enviar el mensaje:', error);
+      console.error('Error sending message:', error);
       
       toast({
-        title: "Error",
-        description: "No se pudo enviar el mensaje. Por favor, inténtalo de nuevo más tarde.",
+        title: t.contact.errorTitle,
+        description: t.contact.errorDescription,
         variant: "destructive",
       });
     } finally {
@@ -75,15 +78,15 @@ const Contact = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="reveal">
               <span className="inline-block px-3 py-1 mb-3 text-xs font-medium tracking-wider text-primary uppercase rounded-full">
-                Contact
+                {t.contact.title}
               </span>
               
               <h2 className="text-4xl font-bold mb-6">
-                Let's Work <span className="text-primary">Together</span>
+                {t.contact.heading.split(' ')[0]} <span className="text-primary">{t.contact.heading.split(' ').slice(1).join(' ')}</span>
               </h2>
               
               <p className="text-lg text-foreground/80 mb-8">
-                Ready to elevate your business with advanced AI solutions? Get in touch to discuss your project or schedule a consultation.
+                {t.contact.description}
               </p>
               
             </div>
@@ -94,7 +97,7 @@ const Contact = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Name
+                      {t.contact.name}
                     </label>
                     <input
                       id="name"
@@ -104,13 +107,13 @@ const Contact = () => {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                      placeholder="Your name"
+                      placeholder={t.contact.namePlaceholder}
                     />
                   </div>
                   
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium mb-2">
-                      Email
+                      {t.contact.email}
                     </label>
                     <input
                       id="email"
@@ -120,13 +123,13 @@ const Contact = () => {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                      placeholder="your@email.com"
+                      placeholder={t.contact.emailPlaceholder}
                     />
                   </div>
                   
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium mb-2">
-                      Message
+                      {t.contact.message}
                     </label>
                     <textarea
                       id="message"
@@ -136,7 +139,7 @@ const Contact = () => {
                       required
                       rows={5}
                       className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
-                      placeholder="Tell me about your project..."
+                      placeholder={t.contact.messagePlaceholder}
                     />
                   </div>
                   
@@ -155,11 +158,11 @@ const Contact = () => {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Sending...
+                        {t.contact.sending}
                       </span>
                     ) : (
                       <span className="flex items-center">
-                        Send Message
+                        {t.contact.send}
                         <Send className="ml-2 w-4 h-4" />
                       </span>
                     )}

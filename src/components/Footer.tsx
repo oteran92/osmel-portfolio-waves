@@ -1,8 +1,10 @@
 
 import React from 'react';
 import { Github, Linkedin, X } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Footer = () => {
+  const { t } = useLanguage();
   const currentYear = new Date().getFullYear();
   
   const socialLinks = [
@@ -42,15 +44,15 @@ const Footer = () => {
         
         <div className="mt-8 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-foreground/70">
-            &copy; {currentYear} Osmel P. Teran. All rights reserved.
+            &copy; {currentYear} Osmel P. Teran. {t.footer.rights}
           </p>
           
           <div className="mt-4 md:mt-0 flex space-x-6">
             <a href="#" className="text-sm text-foreground/70 hover:text-foreground transition-colors">
-              Privacy Policy
+              {t.footer.privacyPolicy}
             </a>
             <a href="#" className="text-sm text-foreground/70 hover:text-foreground transition-colors">
-              Terms of Service
+              {t.footer.termsOfService}
             </a>
           </div>
         </div>
@@ -60,4 +62,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

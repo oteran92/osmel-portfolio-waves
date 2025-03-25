@@ -1,11 +1,12 @@
-
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!canvasRef.current || !containerRef.current) return;
@@ -132,7 +133,7 @@ const Hero = () => {
       
       <div className="container relative z-10 px-4 py-32 sm:px-6 lg:px-8 flex flex-col items-center text-center">
         <span className="inline-block px-3 py-1 mb-6 text-xs font-medium tracking-wider text-primary border border-primary rounded-full uppercase animate-fade-in-fast">
-          AI Engineering Consultant
+          {t.hero.subtitle}
         </span>
         
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight animate-fade-in">
@@ -140,7 +141,7 @@ const Hero = () => {
         </h1>
         
         <p className="mt-6 max-w-2xl text-lg sm:text-xl text-foreground/80 animate-fade-in-slow">
-          Transforming businesses through cutting-edge AI solutions and engineering expertise
+          {t.hero.description}
         </p>
         
         <div className="mt-12 flex flex-col sm:flex-row gap-4 animate-fade-in-slow">
@@ -151,7 +152,7 @@ const Hero = () => {
               "bg-primary text-white shadow-lg hover:shadow-primary/20 hover:-translate-y-1"
             )}
           >
-            Explore Services
+            {t.hero.exploreServices}
           </a>
           <a 
             href="#contact" 
@@ -160,7 +161,7 @@ const Hero = () => {
               "bg-secondary text-foreground hover:bg-secondary/80 hover:-translate-y-1"
             )}
           >
-            Get in Touch
+            {t.hero.getInTouch}
           </a>
         </div>
       </div>

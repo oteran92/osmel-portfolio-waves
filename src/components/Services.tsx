@@ -1,9 +1,11 @@
-
 import React, { useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Lightbulb, Command, BarChart4, Wand2, CircuitBoard, Database } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Services = () => {
+  const { t } = useLanguage();
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -26,33 +28,33 @@ const Services = () => {
 
   const services = [
     {
-      title: "AI Strategy Consulting",
-      description: "Develop a comprehensive AI roadmap aligned with your business goals and technological capabilities.",
+      title: t.services.aiStrategy.title,
+      description: t.services.aiStrategy.description,
       icon: <Lightbulb className="h-8 w-8" />,
     },
     {
-      title: "Custom AI Solutions",
-      description: "Design and implement tailor-made AI systems that address your specific business challenges.",
+      title: t.services.customAI.title,
+      description: t.services.customAI.description,
       icon: <Wand2 className="h-8 w-8" />,
     },
     {
-      title: "Predictive Analytics",
-      description: "Leverage machine learning to forecast trends and make data-driven business decisions.",
+      title: t.services.predictiveAnalytics.title,
+      description: t.services.predictiveAnalytics.description,
       icon: <BarChart4 className="h-8 w-8" />,
     },
     {
-      title: "Natural Language Processing",
-      description: "Create intelligent systems that understand, interpret, and generate human language.",
+      title: t.services.nlp.title,
+      description: t.services.nlp.description,
       icon: <Command className="h-8 w-8" />,
     },
     {
-      title: "AI Integration",
-      description: "Seamlessly integrate AI capabilities into your existing software ecosystem and workflows.",
+      title: t.services.aiIntegration.title,
+      description: t.services.aiIntegration.description,
       icon: <CircuitBoard className="h-8 w-8" />,
     },
     {
-      title: "Data Engineering",
-      description: "Build robust data pipelines and architectures to power your AI and analytics initiatives.",
+      title: t.services.dataEngineering.title,
+      description: t.services.dataEngineering.description,
       icon: <Database className="h-8 w-8" />,
     },
   ];
@@ -62,15 +64,15 @@ const Services = () => {
       <div className="container px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="inline-block px-3 py-1 mb-3 text-xs font-medium tracking-wider text-primary uppercase rounded-full reveal">
-            Services
+            {t.services.title}
           </span>
           
           <h2 className="text-4xl font-bold mb-6 reveal">
-            AI Consulting Services
+            {t.services.heading}
           </h2>
           
           <p className="text-lg text-foreground/80 reveal">
-            Expert solutions to help businesses leverage artificial intelligence for innovation, efficiency, and growth.
+            {t.services.description}
           </p>
         </div>
         

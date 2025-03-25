@@ -1,10 +1,11 @@
-
 import React, { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Code, Cpu, Bot, Brain } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const About = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { t } = useLanguage();
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -27,10 +28,10 @@ const About = () => {
   }, []);
   
   const skills = [
-    { name: 'Software Engineering', icon: <Code className="w-6 h-6" /> },
-    { name: 'AI Development', icon: <Brain className="w-6 h-6" /> },
-    { name: 'Machine Learning', icon: <Cpu className="w-6 h-6" /> },
-    { name: 'Conversational AI', icon: <Bot className="w-6 h-6" /> },
+    { name: t.skills.softwareEngineering, icon: <Code className="w-6 h-6" /> },
+    { name: t.skills.aiDevelopment, icon: <Brain className="w-6 h-6" /> },
+    { name: t.skills.machineLearning, icon: <Cpu className="w-6 h-6" /> },
+    { name: t.skills.conversationalAI, icon: <Bot className="w-6 h-6" /> },
   ];
   
   return (
@@ -42,20 +43,20 @@ const About = () => {
       <div className="container px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <span className="inline-block px-3 py-1 mb-3 text-xs font-medium tracking-wider text-primary uppercase rounded-full reveal">
-            About Me
+            {t.about.title}
           </span>
           
           <h2 className="text-4xl font-bold mb-12 reveal">
-            Engineering Solutions <span className="text-primary">for Complex AI Challenges</span>
+            {t.about.heading.split(' for ')[0]} <span className="text-primary">for {t.about.heading.split(' for ')[1]}</span>
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="reveal">
               <p className="text-lg leading-relaxed mb-6">
-                As a software engineer specializing in AI solutions, I bring technical expertise and innovative thinking to every project. My approach combines solid engineering foundations with cutting-edge AI technologies to solve real business challenges.
+                {t.about.paragraph1}
               </p>
               <p className="text-lg leading-relaxed">
-                I partner with businesses across industries to implement intelligent systems that automate processes, extract insights from data, and create new opportunities for growth and efficiency.
+                {t.about.paragraph2}
               </p>
             </div>
             
