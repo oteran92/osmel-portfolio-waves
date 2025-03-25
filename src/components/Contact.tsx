@@ -3,13 +3,7 @@ import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Mail, Send } from 'lucide-react';
 import { toast } from "@/components/ui/use-toast";
-import emailjs from 'emailjs-com';
-
-// Configuración de EmailJS
-// Estos son valores de demostración, necesitarás reemplazarlos con tus propios valores de EmailJS
-const EMAILJS_SERVICE_ID = "service_id"; // Reemplazar con tu ID de servicio
-const EMAILJS_TEMPLATE_ID = "template_id"; // Reemplazar con tu ID de plantilla
-const EMAILJS_USER_ID = "public_key"; // Reemplazar con tu ID de usuario
+import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -29,22 +23,28 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    const templateParams = {
-      from_name: formData.name,
-      from_email: formData.email,
-      message: formData.message,
-      to_email: 'osmelprieto92@gmail.com'
-    };
-    
     try {
-      const response = await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_USER_ID
-      );
+      // First, store the message in Supabase
+      const { error: dbError } = await supabase
+        .from('contact_messages')
+        .insert([formData]);
+
+      if (dbError) {
+        console.error('Error storing contact message:', dbError);
+        throw new Error(dbError.message);
+      }
+
+      // Also call the edge function to handle email notification
+      const { error: funcError } = await supabase.functions.invoke('send-contact-notification', {
+        body: formData,
+      });
+
+      if (funcError) {
+        console.error('Error calling notification function:', funcError);
+        throw new Error(funcError.message);
+      }
       
-      console.log('Email enviado con éxito:', response);
+      console.log('Message sent successfully');
       
       toast({
         title: "Mensaje enviado",
@@ -57,7 +57,7 @@ const Contact = () => {
         message: '',
       });
     } catch (error) {
-      console.error('Error al enviar el email:', error);
+      console.error('Error al enviar el mensaje:', error);
       
       toast({
         title: "Error",
