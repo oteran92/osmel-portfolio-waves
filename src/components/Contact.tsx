@@ -3,6 +3,13 @@ import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Mail, Send } from 'lucide-react';
 import { toast } from "@/components/ui/use-toast";
+import emailjs from 'emailjs-com';
+
+// Configuración de EmailJS
+// Estos son valores de demostración, necesitarás reemplazarlos con tus propios valores de EmailJS
+const EMAILJS_SERVICE_ID = "service_id"; // Reemplazar con tu ID de servicio
+const EMAILJS_TEMPLATE_ID = "template_id"; // Reemplazar con tu ID de plantilla
+const EMAILJS_USER_ID = "public_key"; // Reemplazar con tu ID de usuario
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -22,11 +29,26 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      message: formData.message,
+      to_email: 'osmelprieto92@gmail.com'
+    };
+    
+    try {
+      const response = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_USER_ID
+      );
+      
+      console.log('Email enviado con éxito:', response);
+      
       toast({
-        title: "Message sent",
-        description: "Thank you for your message. I'll get back to you soon.",
+        title: "Mensaje enviado",
+        description: "¡Gracias por tu mensaje! Me pondré en contacto contigo pronto.",
       });
       
       setFormData({
@@ -34,9 +56,17 @@ const Contact = () => {
         email: '',
         message: '',
       });
+    } catch (error) {
+      console.error('Error al enviar el email:', error);
       
+      toast({
+        title: "Error",
+        description: "No se pudo enviar el mensaje. Por favor, inténtalo de nuevo más tarde.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
   
   return (
@@ -61,8 +91,8 @@ const Contact = () => {
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-4">
                   <Mail className="w-5 h-5" />
                 </div>
-                <a href="mailto:contact@osmelteran.com" className="text-lg hover:text-primary transition-colors">
-                  contact@osmelteran.com
+                <a href="mailto:osmelprieto92@gmail.com" className="text-lg hover:text-primary transition-colors">
+                  osmelprieto92@gmail.com
                 </a>
               </div>
             </div>
