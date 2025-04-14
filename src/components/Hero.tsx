@@ -1,12 +1,16 @@
+
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const particlesRef = useRef<THREE.Points | null>(null);
   const { t } = useLanguage();
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!canvasRef.current || !containerRef.current) return;
@@ -41,9 +45,9 @@ const Hero = () => {
     
     for (let i = 0; i < particlesCount; i++) {
       // Position (x, y, z)
-      positionArray[i * 3] = (Math.random() - 0.5) * 70; // x
-      positionArray[i * 3 + 1] = (Math.random() - 0.5) * 70; // y
-      positionArray[i * 3 + 2] = (Math.random() - 0.5) * 70; // z
+      positionArray[i * 3] = (Math.random() - 0.5) * 70;
+      positionArray[i * 3 + 1] = (Math.random() - 0.5) * 70;
+      positionArray[i * 3 + 2] = (Math.random() - 0.5) * 70;
       
       // Scale
       scaleArray[i] = Math.random();
@@ -52,18 +56,34 @@ const Hero = () => {
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positionArray, 3));
     particlesGeometry.setAttribute('scale', new THREE.BufferAttribute(scaleArray, 1));
     
-    // Material
+    // Material with theme-based color
+    const getParticleColor = (theme: 'light' | 'dark') => {
+      return theme === 'dark' ? '#ffffff' : '#4d97ff';
+    };
+
     const particlesMaterial = new THREE.PointsMaterial({
       size: 0.2,
       sizeAttenuation: true,
-      color: new THREE.Color('#4d97ff'),
+      color: new THREE.Color(getParticleColor(theme)),
       transparent: true,
       opacity: 0.8,
     });
     
     // Mesh
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+    particlesRef.current = particles;
     scene.add(particles);
+    
+    // Theme change handler
+    const handleThemeChange = (event: CustomEvent<{ theme: 'light' | 'dark' }>) => {
+      if (particlesRef.current) {
+        (particlesRef.current.material as THREE.PointsMaterial).color.set(
+          getParticleColor(event.detail.theme)
+        );
+      }
+    };
+
+    window.addEventListener('themechange', handleThemeChange as EventListener);
     
     // Handle window resize
     const handleResize = () => {
@@ -99,9 +119,11 @@ const Hero = () => {
       targetX = mouseX * 0.1;
       targetY = mouseY * 0.1;
       
-      particles.rotation.y += 0.002;
-      particles.rotation.x += (targetY - particles.rotation.x) * 0.02;
-      particles.rotation.y += (targetX - particles.rotation.y) * 0.02;
+      if (particles) {
+        particles.rotation.y += 0.002;
+        particles.rotation.x += (targetY - particles.rotation.x) * 0.02;
+        particles.rotation.y += (targetX - particles.rotation.y) * 0.02;
+      }
       
       renderer.render(scene, camera);
     };
@@ -110,6 +132,7 @@ const Hero = () => {
     
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('themechange', handleThemeChange as EventListener);
       document.removeEventListener('mousemove', handleMouseMove);
       
       // Clean up Three.js resources
@@ -117,7 +140,7 @@ const Hero = () => {
       particlesMaterial.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [theme]);
   
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">

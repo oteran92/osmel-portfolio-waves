@@ -25,6 +25,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       setTheme('dark');
       document.documentElement.classList.add('dark');
     }
+
+    // Dispatch custom event for Three.js to update particle colors
+    const themeChangeEvent = new CustomEvent('themechange', { 
+      detail: { theme: savedTheme || (prefersDark ? 'dark' : 'light') }
+    });
+    window.dispatchEvent(themeChangeEvent);
   }, []);
 
   const toggleTheme = () => {
@@ -32,6 +38,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
     document.documentElement.classList.toggle('dark');
+    
+    // Dispatch custom event for Three.js to update particle colors
+    const themeChangeEvent = new CustomEvent('themechange', { 
+      detail: { theme: newTheme }
+    });
+    window.dispatchEvent(themeChangeEvent);
   };
 
   return (
