@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '../contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,7 +29,7 @@ const Navbar = () => {
     <header 
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "py-3 bg-white/80 backdrop-blur-lg shadow-sm" : "py-5 bg-transparent"
+        isScrolled ? "py-3 dark:bg-black/80 bg-white/80 backdrop-blur-lg shadow-sm" : "py-5 bg-transparent"
       )}
     >
       <div className="container flex items-center justify-between">
@@ -52,6 +52,7 @@ const Navbar = () => {
               {item.label}
             </a>
           ))}
+          <ThemeToggle />
           <LanguageSwitcher />
         </nav>
         
