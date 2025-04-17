@@ -61,17 +61,22 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ theme }) => {
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positionArray, 3));
     particlesGeometry.setAttribute('scale', new THREE.BufferAttribute(scaleArray, 1));
     
+    // Create a star shape texture
+    const starTexture = createStarTexture();
+    
     // Material with theme-based color
     const getParticleColor = (theme: 'light' | 'dark') => {
       return theme === 'dark' ? '#ffffff' : '#4d97ff';
     };
 
     const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.2,
+      size: 0.4,
       sizeAttenuation: true,
       color: new THREE.Color(getParticleColor(theme)),
       transparent: true,
       opacity: 0.8,
+      map: starTexture,
+      alphaTest: 0.01,
     });
     
     // Mesh
@@ -138,9 +143,70 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({ theme }) => {
       // Clean up Three.js resources
       particlesGeometry.dispose();
       particlesMaterial.dispose();
+      starTexture.dispose();
       renderer.dispose();
     };
   }, [theme]);
+
+  // Function to create a star-shaped texture
+  function createStarTexture() {
+    const canvas = document.createElement('canvas');
+    const size = 32;
+    canvas.width = size;
+    canvas.height = size;
+    
+    const context = canvas.getContext('2d');
+    if (!context) return new THREE.Texture();
+
+    // Clear canvas
+    context.clearRect(0, 0, size, size);
+    
+    // Draw star
+    const centerX = size / 2;
+    const centerY = size / 2;
+    const spikes = 5;
+    const outerRadius = size / 2 - 2;
+    const innerRadius = outerRadius / 2;
+    
+    context.beginPath();
+    let rot = Math.PI / 2 * 3;
+    const step = Math.PI / spikes;
+
+    // Draw the star shape
+    context.moveTo(centerX, centerY - outerRadius);
+    for (let i = 0; i < spikes; i++) {
+      context.lineTo(
+        centerX + Math.cos(rot) * outerRadius,
+        centerY + Math.sin(rot) * outerRadius
+      );
+      rot += step;
+      
+      context.lineTo(
+        centerX + Math.cos(rot) * innerRadius,
+        centerY + Math.sin(rot) * innerRadius
+      );
+      rot += step;
+    }
+    context.lineTo(centerX, centerY - outerRadius);
+    context.closePath();
+    
+    // Fill with white and add glow effect
+    const gradient = context.createRadialGradient(
+      centerX, centerY, 0,
+      centerX, centerY, outerRadius
+    );
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    gradient.addColorStop(0.3, 'rgba(255, 255, 255, 0.8)');
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    
+    context.fillStyle = gradient;
+    context.fill();
+    
+    // Create texture from canvas
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
+  }
 
   return (
     <div 
