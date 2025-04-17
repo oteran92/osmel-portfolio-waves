@@ -11,6 +11,12 @@ const Hero = () => {
   const particlesRef = useRef<THREE.Points | null>(null);
   const { t } = useLanguage();
   const { theme } = useTheme();
+  
+  // Mouse position state refs
+  const mouseX = useRef(0);
+  const mouseY = useRef(0);
+  const targetX = useRef(0);
+  const targetY = useRef(0);
 
   useEffect(() => {
     if (!canvasRef.current || !containerRef.current) return;
@@ -97,17 +103,12 @@ const Hero = () => {
     window.addEventListener('resize', handleResize);
     
     // Mouse movement effect
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
-    
     const windowHalfX = window.innerWidth / 2;
     const windowHalfY = window.innerHeight / 2;
     
     const handleMouseMove = (event: MouseEvent) => {
-      mouseX = (event.clientX - windowHalfX) / 100;
-      mouseY = (event.clientY - windowHalfY) / 100;
+      mouseX.current = (event.clientX - windowHalfX) / 100;
+      mouseY.current = (event.clientY - windowHalfY) / 100;
     };
     
     document.addEventListener('mousemove', handleMouseMove);
@@ -116,13 +117,13 @@ const Hero = () => {
     const animate = () => {
       requestAnimationFrame(animate);
       
-      targetX = mouseX * 0.1;
-      targetY = mouseY * 0.1;
+      targetX.current = mouseX.current * 0.1;
+      targetY.current = mouseY.current * 0.1;
       
       if (particles) {
         particles.rotation.y += 0.002;
-        particles.rotation.x += (targetY - particles.rotation.x) * 0.02;
-        particles.rotation.y += (targetX - particles.rotation.y) * 0.02;
+        particles.rotation.x += (targetY.current - particles.rotation.x) * 0.02;
+        particles.rotation.y += (targetX.current - particles.rotation.y) * 0.02;
       }
       
       renderer.render(scene, camera);
